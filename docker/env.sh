@@ -17,6 +17,7 @@ if [[ -z "$PIP_EXTRA_INDEX_URL" ]]; then
     # Check for CUDA and ROCm
     CUDA_AVAILABLE=$(python -c "import torch;print(torch.cuda.is_available())")
     ROCM_AVAILABLE=$(python -c "import torch;print(torch.version.hip is not None)")
+    echo "IS CUDA AVAILABLE, CUNT!?: $CUDA_AVAILABLE"
     if [[ "${CUDA_AVAILABLE}" == "True" ]]; then
       CONTAINER_FLAVOR="cuda"
     elif [[ "${ROCM_AVAILABLE}" == "True" ]]; then

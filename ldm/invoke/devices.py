@@ -12,8 +12,10 @@ CPU_DEVICE = torch.device("cpu")
 def choose_torch_device() -> torch.device:
     '''Convenience routine for guessing which GPU device to run model on'''
     if Globals.always_use_cpu:
+        print('CUNTS! USE THE CPU')
         return CPU_DEVICE
     if torch.cuda.is_available():
+        print('We\'re using the goddamn cuda.')
         return torch.device('cuda')
     if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
         return torch.device('mps')

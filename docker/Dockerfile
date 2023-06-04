@@ -40,6 +40,10 @@ ENV PIP_USE_PEP517=1
 #######################
 FROM python-base AS pyproject-builder
 
+# set working directory and env
+ARG APPDIR=/usr/src
+ARG APPNAME=InvokeAI
+
 # Install dependencies
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -62,7 +66,7 @@ RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
   --upgrade-deps
 
 # copy sources
-COPY --link . .
+COPY . .
 
 # install pyproject.toml
 ARG PIP_EXTRA_INDEX_URL
@@ -77,6 +81,10 @@ RUN python3 -c "from patchmatch import patch_match"
 ##  runtime image  ##
 #####################
 FROM python-base AS runtime
+
+# set working directory and env
+ARG APPDIR=/usr/src
+ARG APPNAME=InvokeAI
 
 # Create a new user
 ARG UNAME=appuser
@@ -99,5 +107,5 @@ ENV TRANSFORMERS_CACHE ${VOLUME_DIR}/.cache
 ENV INVOKE_MODEL_RECONFIGURE "--yes --default_only"
 EXPOSE 9090
 ENTRYPOINT [ "invokeai" ]
-CMD [ "--web", "--host", "0.0.0.0", "--port", "9090" ]
+CMD [ "--no-nsfw_checker", "--no-safety_checker", "--web", "--host", "0.0.0.0", "--port", "9090" ]
 VOLUME [ "${VOLUME_DIR}" ]

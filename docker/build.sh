@@ -17,11 +17,13 @@ SCRIPTDIR=$(dirname "${BASH_SOURCE[0]}")
 cd "$SCRIPTDIR" || exit 1
 
 source ./env.sh
+source .env
 
 DOCKERFILE=${INVOKE_DOCKERFILE:-./Dockerfile}
 
 # print the settings
 echo -e "You are using these values:\n"
+pwd
 echo -e "Dockerfile:\t\t${DOCKERFILE}"
 echo -e "index-url:\t\t${PIP_EXTRA_INDEX_URL:-none}"
 echo -e "Volumename:\t\t${VOLUMENAME}"
@@ -32,16 +34,16 @@ echo -e "Container Tag:\t\t${CONTAINER_TAG}"
 echo -e "Container Flavor:\t${CONTAINER_FLAVOR}"
 echo -e "Container Image:\t${CONTAINER_IMAGE}\n"
 
-# Create docker volume
-if [[ -n "$(docker volume ls -f name="${VOLUMENAME}" -q)" ]]; then
+# Create podman volume
+if [[ -n "$(podman volume ls -f name="${VOLUMENAME}" -q)" ]]; then
     echo -e "Volume already exists\n"
 else
-    echo -n "creating docker volume "
-    docker volume create "${VOLUMENAME}"
+    echo -n "creating podman volume "
+    podman volume create "${VOLUMENAME}"
 fi
 
 # Build Container
-DOCKER_BUILDKIT=1 docker build \
+DOCKER_BUILDKIT=1 podman build \
     --platform="${PLATFORM:-linux/amd64}" \
     --tag="${CONTAINER_IMAGE:-invokeai}" \
     ${CONTAINER_FLAVOR:+--build-arg="CONTAINER_FLAVOR=${CONTAINER_FLAVOR}"} \
