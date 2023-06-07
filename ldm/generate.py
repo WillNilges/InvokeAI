@@ -199,8 +199,8 @@ class Generate:
         # Note that in previous versions, there was an option to pass the
         # device to Generate(). However the device was then ignored, so
         # it wasn't actually doing anything. This logic could be reinstated.
-        # self.device = torch.device(choose_torch_device())
-        self.device = torch.device('cuda')
+        self.device = torch.device(choose_torch_device())
+        # self.device = torch.device('cuda')
         print(f">> Using device_type {self.device.type}")
         if self.device.type == 'cuda':
             print(f">> CUDA device '{torch.cuda.get_device_name(torch.cuda.current_device())}' (GPU {os.environ.get('CUDA_VISIBLE_DEVICES') or 0})")

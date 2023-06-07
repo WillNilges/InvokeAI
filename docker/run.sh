@@ -30,10 +30,10 @@ podman run \
   ${HUGGING_FACE_HUB_TOKEN:+--env="HUGGING_FACE_HUB_TOKEN=${HUGGING_FACE_HUB_TOKEN}"} \
   --publish=9090:9090 \
   --cap-add=sys_nice \
-  ${GPU_FLAGS:+--gpus="${GPU_FLAGS}"} \
-  --device nvidia.com/gpu=1 \
   localhost/invokeai-wilnil:latest
 #  "${CONTAINER_IMAGE}" ${@:+$@}
+#  ${GPU_FLAGS:+--gpus="${GPU_FLAGS}"} \
+#  --device nvidia.com/gpu=1 \
 
 # Remove Trash folder
 for f in outputs/.Trash*; do
